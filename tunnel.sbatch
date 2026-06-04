@@ -36,7 +36,11 @@ SIF_BIND_PATH used for singularity bindings: ${SIF_BIND_PATH}
 # Get tunneling information
 XDG_RUNTIME_DIR=""
 NODE=$(hostname -s)
-PORT=$(python -c 'import socket; s=socket.socket(); s.bind(("", 0)); print(s.getsockname()[1]); s.close()') # random available port
+read LOWERPORT UPPERPORT < /proc/sys/net/ipv4/ip_local_port_range
+while :; do
+    PORT=$(($LOWERPORT + ($RANDOM % ($UPPERPORT - $LOWERPORT))))
+    ss -tln | grep -q ":$PORT " || break
+done
 
 # Tunneling instructions
 echo "
@@ -55,8 +59,11 @@ The time limit for this job is: $TIME
 This tunnel will close at: $end_time_readable
 "
 
-if [ -n "${SIF_BIND_PATH}" ]; then
+if [ -n "${SIF_BIND_PATH}" ] && [ -d "${SIF_BIND_PATH}" ]; then
     singularity exec -B ${SIF_BIND_PATH}:${SIF_BIND_PATH} ${SIF_IMAGE} /usr/sbin/sshd -p ${PORT} -D
+elif [ -n "${SIF_BIND_PATH}" ]; then
+    echo "WARNING: SIF_BIND_PATH ${SIF_BIND_PATH} does not exist, skipping bind mount"
+    singularity exec ${SIF_IMAGE} /usr/sbin/sshd -p ${PORT} -D
 else
     singularity exec ${SIF_IMAGE} /usr/sbin/sshd -p ${PORT} -D
 fi
