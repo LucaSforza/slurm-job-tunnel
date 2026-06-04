@@ -53,7 +53,7 @@ PORT=${PORT}
 TIME=$(date -u -d @$(( $SLURM_JOB_END_TIME - $SLURM_JOB_START_TIME )) +%H:%M:%S)
 
 
-end_time_readable=$(date -d "@$SLURM_JOB_END_TIME" '+%Y-%m-%d %H:%M:%S')
+end_time_readable=$(date -u -d "@$SLURM_JOB_END_TIME" '+%Y-%m-%d %H:%M:%S')
 echo "
 The time limit for this job is: $TIME
 This tunnel will close at: $end_time_readable

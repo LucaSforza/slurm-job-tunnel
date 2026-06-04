@@ -10,7 +10,7 @@ import signal
 import subprocess
 import time
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import List, Tuple, TYPE_CHECKING
 from dataclasses import dataclass
 import sys
@@ -98,7 +98,7 @@ class JobTunnel:
 
         self.port = int(port)
         self.node = node
-        self.termination_time = datetime.strptime(termination_time, "%Y-%m-%d %H:%M:%S")
+        self.termination_time = datetime.strptime(termination_time, "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone.utc)
 
         return self.port, self.node, self.termination_time
 
@@ -342,7 +342,7 @@ def run_tunnel(config: "TunnelConfig") -> None:
 
     assert job_tunnel.termination_time is not None, "Termination time is not set"
 
-    time.sleep((job_tunnel.termination_time - datetime.now()).total_seconds() - 60)
+    time.sleep((job_tunnel.termination_time - datetime.now(timezone.utc)).total_seconds() - 60)
     logging.info("Tunnel will close in 1 minute!")
     logging.info("Tunnel closed")
 
