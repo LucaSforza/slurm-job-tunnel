@@ -46,3 +46,7 @@ openssh.def        — Singularity def file. Bootstraps ubuntu:22.04, installs o
 ### Configuration
 
 Stored as JSON at `~/.slurm-job-tunnel/config.json`. Set via `init`, used as defaults for `run`.
+
+## Project goals
+
+See [TODO.md](TODO.md) for planned features.

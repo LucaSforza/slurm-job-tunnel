@@ -29,7 +29,16 @@ version = "0.1.1"
 source = { editable = "." }
 dependencies = [
     { name = "pexpect" },
+    { name = "slurm-job-util" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "pexpect" }]
+requires-dist = [
+    { name = "pexpect" },
+    { name = "slurm-job-util", git = "https://github.com/wvdtoorn/slurm-job-util.git" },
+]
+
+[[package]]
+name = "slurm-job-util"
+version = "0.1.1"
+source = { git = "https://github.com/wvdtoorn/slurm-job-util.git#c4d199eb2d09cb8c80f4dcafe0908b21a184b282" }
