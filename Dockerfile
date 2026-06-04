@@ -1,3 +1,3 @@
-FROM ubuntu:22.04
-RUN apt-get update && apt-get install -y openssh-server
+FROM alpine:3.23
+RUN apk update && apk add openssh
 RUN echo "UsePAM=no" > /etc/ssh/sshd_config
