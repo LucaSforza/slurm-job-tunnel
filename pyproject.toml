@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "slurm-job-tunnel"
+version = "0.1.1"
+description = "Submit a SLURM job and establish an SSH tunnel to the allocated compute node"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pexpect",
+]
+
+[project.scripts]
+slurm-job-tunnel = "slurm_job_tunnel.main:main"
+sjt = "slurm_job_tunnel.main:main"
+
+[tool.uv.sources]
+slurm-job-util = { git = "https://github.com/wvdtoorn/slurm-job-util.git" }
